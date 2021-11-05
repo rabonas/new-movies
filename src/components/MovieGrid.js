@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
+import { Link } from 'react-router-dom';
 import usePrevious from '../hooks'
 
 const MY_API_KEY = '3b62cbd3019cef6ea3bcc5ecce56c01c';
@@ -35,10 +36,13 @@ const MovieGrid = ({genre}) => {
         <div className="movie-grid">
             <h2> Movies count: {movies.length}</h2>
             <div className="row">
-                {movies.map((el, i) => <div key={i} className="movie-grid__movie">
+                {movies.map((el, i) => <Link to={`/movie/${el.id}`} key={i} className="movie-grid__movie">
+                    <div>
                     <img src={IMAGE_URL + el.poster_path} alt={el.title}/>
+                    
                     <h3>{el.title ? el.title : el.name}</h3>
-                </div>)}
+                </div>
+                </Link>)}
                 {/* <button type="button" onClick={loadMore}>Load more</button> */}
                 {page < totalPage ? <button type="button" onClick={loadMore} className="load custom-btn">Load more</button> : ''}
             </div>

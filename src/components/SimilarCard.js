@@ -8,7 +8,8 @@ const SimilarCard = (props) => {
         <Link to={`/movie/${props.movieobj.id}`}>
             <div className="similar">
                 <img src={IMAGE_URL + props.movieobj.poster_path} alt={props.movieobj.title} />
-                <h2>{props.movieobj.title}</h2>
+                <div className="similar__bg"></div>
+                <h2 className="similar__name">{props.movieobj.title}</h2>
             </div>
         </Link>
     )

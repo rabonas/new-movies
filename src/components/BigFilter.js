@@ -1,12 +1,12 @@
 import React, { useEffect,useState } from 'react'
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Autoplay } from "swiper";
 import styled from 'styled-components'
 import Select from 'react-select';
 import Movie from './Movie';
 
 const MY_API_KEY = '3b62cbd3019cef6ea3bcc5ecce56c01c';
 const API_PARAMS = `?api_key=${MY_API_KEY}&language=en-US`;
-const GENRES = `https://api.themoviedb.org/3/genre/movie/list${API_PARAMS}`;
 
 const InputGap = styled.div`
 margin-bottom: 25px;
@@ -32,17 +32,18 @@ margin-top:30px;
 
 
 const BigFilter = () => {
+  const [sort, setSort] = useState("");
+  const [year, setYear] = useState("");
+  const [total, setTotal] = useState(0);
+  const [genre, setGenre] = useState('');
+  const [genreList, setGenreList] = useState([]);
   
-    const SORT_BY_ALL = `https://api.themoviedb.org/3/discover/movie?api_key=${MY_API_KEY}&language=en-US&sort_by=${sort}.desc&include_adult=false&page=1&year=${year}&with_genres=${genre}`;
+  const [error,  setError] = useState()
+  
+  const SORT_BY_ALL = `https://api.themoviedb.org/3/discover/movie?api_key=${MY_API_KEY}&language=en-US&sort_by=${sort}.desc&include_adult=false&page=1&year=${year}&with_genres=${genre}`;
+  const GENRES = `https://api.themoviedb.org/3/genre/movie/list${API_PARAMS}`;
+  
     
-    const [sort, setSort] = useState("");
-    const [year, setYear] = useState("");
-    const [total, setTotal] = useState(0);
-    const [genre, setGenre] = useState('');
-    const [genreList, setGenreList] = useState([]);
-
-    const [error,  setError] = useState()
-
     useEffect(() => {
         fetch(GENRES)
           .then((res) => {
@@ -69,7 +70,7 @@ const BigFilter = () => {
         const mappedGenre = newValue.map((el) => el.value);
         // men tanlayotgan janrlarimni olib join qilib beradi
         console.log(mappedGenre);
-        setGenre(`${mappedGenre}`);
+        // setGenre(`${mappedGenre}`);
         // setGenre(mappedGenre.join(''));
         // console.log(setGenre(mappedGenre.join('')))
         console.log(`${mappedGenre}`)
@@ -151,8 +152,10 @@ const BigFilter = () => {
                 </InputGap>
             </form>
             <SearchedMovies className ='searched_movies'>
-          {!error ? discover.map((el) => ( 
-            <Movie className="movies-wrapper" movieobj={el} key={el.id} /> )) : error}
+            
+          {!error ?<Swiper modules={[Autoplay]} spaceBetween={50} slidesPerView={3} loop autoplay={{ delay: 2000 , disableOnInteraction: false}} style={{padding: '10px 0'}}>
+                {discover.map(el => (<SwiperSlide key={el.id}><Movie className="movies-wrapper" movieobj={el} /></SwiperSlide>))}
+            </Swiper> : error}
         </SearchedMovies>
         </div>
     )

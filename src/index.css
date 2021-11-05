@@ -188,10 +188,41 @@ a {
   background-image: linear-gradient(150deg, #c797eb 74%, #f0ecfc 5%);
 }
 
-
-
 .similar {
   position: relative;
+}
+
+.similar__bg {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* transform: scale(0); */
+  transition: all .5s linear;
+}
+
+.similar__name {
+  display: none;
+  position: absolute;
+  bottom: 20px;
+  left: 10px;
+  font-size: 28px;
+  color: #fff;
+  /* transform: scale(0); */
+}
+
+.similar:hover .similar__bg, .similar:hover .similar__name {
+  display: block;
+  /* transform: scale(1); */
+  transition: all .5s linear;
+}
+
+.similar:hover {
+  transition: all .5s linear;
+  box-shadow: 0 0px 15px 0 #fff;
 }
 
 .actor img, .similar img {
