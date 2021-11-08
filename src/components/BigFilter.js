@@ -160,30 +160,30 @@ const BigFilter = () => {
       };
 
       const [discover, setDiscover] = useState([]);
-
-        const handleDiscover = () => {
-            fetch(SORT_BY_ALL)
-            .then((res) => {
-                if (!res.ok) {
-                throw Error("Serverda ma'lumot olishda xatolik!!");
-                }
-                return res.json();
-            })
-            .then((data) => {
-                console.log(data);
-                setDiscover(data.results);
-                
-                setTotal(data.total_results);
-            })
-            .catch((err) => {
-                setError(err.message);
-            });
-        };
+      
+      const handleDiscover = () => {
+        fetch(SORT_BY_ALL)
+        .then((res) => {
+            if (!res.ok) {
+            throw Error("Serverda ma'lumot olishda xatolik!!");
+            }
+            return res.json();
+        })
+        .then((data) => {
+            console.log(data);
+            setDiscover(data.results);
+            
+            setTotal(data.total_results);
+        })
+        .catch((err) => {
+            setError(err.message);
+        });
+    };
 
 
 
     return (
-        <div>
+        <div className="container">
             <form >
                 <BigSearchTitle>Big Search</BigSearchTitle>
 
