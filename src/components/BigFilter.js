@@ -4,18 +4,21 @@ import SwiperCore, { Autoplay } from "swiper";
 import styled from 'styled-components'
 import Select from 'react-select';
 import Movie from './Movie';
+import apiCalls from '../config/api';
 
 const MY_API_KEY = '3b62cbd3019cef6ea3bcc5ecce56c01c';
 const API_PARAMS = `?api_key=${MY_API_KEY}&language=en-US`;
 
 const InputGap = styled.div`
 margin-bottom: 25px;
-border:1px red solid;
+display: flex;
+justify-content: space-between;
 color:yellow;
 `;
 
 const Label = styled.label`
 color: white;
+width: 100%;
 `;
 
 const BigSearchTitle = styled.h1`
@@ -45,20 +48,25 @@ const BigFilter = () => {
   
     
     useEffect(() => {
-        fetch(GENRES)
-          .then((res) => {
-            if (!res.ok) {
-              throw Error("Serverda ma'lumot olishda xatolik!!");
-            }
-            return res.json();
-          })
-          .then((data) => {
-            console.log(data);
-            setGenreList(data.genres);
-          })
-          .catch((err) => {
-            setError(err.message);
+          apiCalls.genre().then(data => {
+              setGenreList(data.genres);
+          }).catch( err => {
+              setError(err.message);
           });
+      //   fetch(GENRES)
+      //     .then((res) => {
+      //       if (!res.ok) {
+      //         throw Error("Serverda ma'lumot olishda xatolik!!");
+      //       }
+      //       return res.json();
+      //     })
+      //     .then((data) => {
+      //       console.log(data);
+      //       setGenreList(data.genres);
+      //     })
+      //     .catch((err) => {
+      //       setError(err.message);
+      //     });
       }, []);
 
       const newGenreArr = genreList.map((el) => {
@@ -162,33 +170,45 @@ const BigFilter = () => {
       const [discover, setDiscover] = useState([]);
       
       const handleDiscover = () => {
-        fetch(SORT_BY_ALL)
-        .then((res) => {
-            if (!res.ok) {
-            throw Error("Serverda ma'lumot olishda xatolik!!");
-            }
-            return res.json();
-        })
-        .then((data) => {
-            console.log(data);
-            setDiscover(data.results);
+        apiCalls.discover({
+          sort_by: sort.desc,
+          include_adult: false,
+          page: 1,
+          year,
+          with_genres: genre,
+        }).then(data => {
+          setDiscover(data.results);
+          setTotal(data.total_results);
+      }).catch( err => {
+          setError(err.message);
+      });
+        // fetch(SORT_BY_ALL)
+        // .then((res) => {
+        //     if (!res.ok) {
+        //     throw Error("Serverda ma'lumot olishda xatolik!!");
+        //     }
+        //     return res.json();
+        // })
+        // .then((data) => {
+        //     console.log(data);
+        //     setDiscover(data.results);
             
-            setTotal(data.total_results);
-        })
-        .catch((err) => {
-            setError(err.message);
-        });
+        //     setTotal(data.total_results);
+        // })
+        // .catch((err) => {
+        //     setError(err.message);
+        // });
     };
 
 
 
     return (
         <div className="container">
-            <form >
+            <form className="filter__form">
                 <BigSearchTitle>Big Search</BigSearchTitle>
 
                 <Label>Till Year</Label>
-                <Select options={YearOptions} onChange={handleYearChange} />
+                <Select options={YearOptions} onClick={handleYearChange} />
 
                 <Label> Genre </Label>
                 <Select options={newGenreArr} isMulti onChange={handleGenreChange} />
@@ -198,16 +218,39 @@ const BigFilter = () => {
                 <br />
 
                 <InputGap>
-                    <button className="search-btn" type="button" onClick={handleDiscover}> Discover </button>
+                    <button className="load custom-btn" type="button" onClick={handleDiscover}> Discover </button>
                     <div>Found <span>{total}</span> Movies{" "}</div>
                 </InputGap>
             </form>
-            <SearchedMovies className ='searched_movies'>
+            {/* <SearchedMovies className ='searched_movies'> */}
             
-          {!error ?<Swiper modules={[Autoplay]} spaceBetween={30} slidesPerView={3} loop autoplay={{ delay: 2000 , disableOnInteraction: false}} style={{padding: '10px 0'}}>
+          {!error ?<Swiper 
+            breakpoints={{
+              "200": {
+              "slidesPerView": 1.5,
+              "spaceBetween": 5
+              },
+              "320": {
+              "slidesPerView": 2,
+              "spaceBetween": 10
+              },
+              "565": {
+              "slidesPerView": 2,
+              "spaceBetween": 20
+              },
+              "767": {
+              "slidesPerView": 3,
+              "spaceBetween": 40
+              },
+              "1199": {
+              "slidesPerView": 3,
+              "spaceBetween": 50
+              }
+          }}
+           modules={[Autoplay]} loop autoplay={{ delay: 2000 , disableOnInteraction: false}} style={{padding: '10px 0'}}>
                 {discover.map(el => (<SwiperSlide key={el.id}><Movie className="movies-wrapper" movieobj={el} /></SwiperSlide>))}
             </Swiper> : error}
-        </SearchedMovies>
+        {/* </SearchedMovies> */}
         </div>
     )
 }

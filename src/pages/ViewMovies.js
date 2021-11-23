@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 import ActorCard from '../components/ActorCard';
 import SimilarCard from '../components/SimilarCard';
+import apiCalls from '../config/api';
 
 const MY_API_KEY = '3b62cbd3019cef6ea3bcc5ecce56c01c';
 const SINGLE_MOVIE_API = `https://api.themoviedb.org/3/movie/`;
@@ -24,22 +25,31 @@ const ViewMovies = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch(SINGLE_MOVIE_API + id + API_PARAMS).then(res => res.json()).then(data => {
+        apiCalls.detail(id).then(data => {
             setMovieInfo(data);
-            // console.log(data)
         });
+        // fetch(SINGLE_MOVIE_API + id + API_PARAMS).then(res => res.json()).then(data => {
+        //     setMovieInfo(data);
+        //     // console.log(data)
+        // });
 
-        fetch(SINGLE_MOVIE_API + id + '/credits' + API_PARAMS).then( res => res.json())
-        .then(data => {
-            // console.log(data);
+        apiCalls.actorsAndCast(id).then(data => {
             setActorInfo(data.cast);
         });
+        // fetch(SINGLE_MOVIE_API + id + '/credits' + API_PARAMS).then( res => res.json())
+        // .then(data => {
+        //     // console.log(data);
+        //     setActorInfo(data.cast);
+        // });
 
-        fetch(SINGLE_MOVIE_API + id + '/similar' + API_PARAMS).then( res => res.json() )
-        .then(data => {
+        apiCalls.similar(id).then(data => {
             setSimilarInfo(data.results);
-            // console.log(data);
         });
+        // fetch(SINGLE_MOVIE_API + id + '/similar' + API_PARAMS).then( res => res.json() )
+        // .then(data => {
+        //     setSimilarInfo(data.results);
+        //     // console.log(data);
+        // });
     }, [id])
 
     return (
@@ -55,7 +65,7 @@ const ViewMovies = () => {
                                     <span className="info">Genres: { movieInfo.genres ? movieInfo.genres.map( el => <span>{el.name}</span>) : ''}</span>
                                     <span className="info">Country: { movieInfo.production_countries ? movieInfo.production_countries.map( el => <span>{el.name}</span>) : ''}</span>
                                     <span className="info">Data: <span>{movieInfo.release_date}</span></span>
-                                    <p>{movieInfo.overview}</p>
+                                    <p className="view-movie__info_text">{movieInfo.overview}</p>
                                 </div>
                             </div>
                         </div>
@@ -65,7 +75,28 @@ const ViewMovies = () => {
             </div>
             <div className="container">
                 <div className="row">
-                    <Swiper spaceBetween={30} slidesPerView={6}>
+                    <Swiper breakpoints={{
+                        "320": {
+                        "slidesPerView": 3,
+                        "spaceBetween": 5
+                        },
+                        "480": {
+                        "slidesPerView": 4,
+                        "spaceBetween": 10
+                        },
+                        "565": {
+                        "slidesPerView": 4,
+                        "spaceBetween": 20
+                        },
+                        "767": {
+                        "slidesPerView": 6,
+                        "spaceBetween": 20
+                        },
+                        "1199": {
+                        "slidesPerView": 6,
+                        "spaceBetween": 30
+                        }
+                    }}>
                         {actorInfo.map((el, i) => (<SwiperSlide key={i} style={{backgroundColor: '#fff', padding: '5px'}}><ActorCard actorobj={el}/></SwiperSlide>))};
                     </Swiper>
                 </div>
@@ -73,7 +104,24 @@ const ViewMovies = () => {
 
             <div className="container">
                 <div className="row">
-                    <Swiper spaceBetween={30} slidesPerView={4}>
+                    <Swiper breakpoints={{
+                        "320": {
+                        "slidesPerView": 2,
+                        "spaceBetween": 20
+                        },
+                        "480": {
+                        "slidesPerView": 3,
+                        "spaceBetween": 20
+                        },
+                        "565": {
+                        "slidesPerView": 3,
+                        "spaceBetween": 20
+                        },
+                        "767": {
+                        "slidesPerView": 4,
+                        "spaceBetween": 30
+                        }
+                    }}>
                         {similarInfo.map((el, i) => (<SwiperSlide key={i} style={{backgroundColor: '#fff'}}><SimilarCard movieobj={el}/></SwiperSlide>))};
                     </Swiper>
                 </div>

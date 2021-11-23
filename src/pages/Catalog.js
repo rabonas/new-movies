@@ -11,9 +11,8 @@ const Catalog = () => {
 
     return (
         <div className="container">
-            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <div className="row4">
                 <Genres/>
-                {/* <MovieGrid genre={genreid}/> */}
                 { <MovieGrid genre={genreid}/> ? <MovieGrid genre={genreid}/>  : '🤷‍♀️' }
             </div>
         </div>

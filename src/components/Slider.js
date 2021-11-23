@@ -1,3 +1,5 @@
+// import 'swiper/css';
+// import 'swiper/css/virtual';
 import React from 'react'
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -6,6 +8,9 @@ import Loader from "../components/Loader";
 import styled from 'styled-components'
 import { render } from '@testing-library/react';
 import { Link } from 'react-router-dom';
+import apiCalls from '../config/api';
+import { Virtual } from 'swiper';
+
 
 const IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
 const MY_API_KEY = '3b62cbd3019cef6ea3bcc5ecce56c01c';
@@ -13,7 +18,7 @@ const MY_API_KEY = '3b62cbd3019cef6ea3bcc5ecce56c01c';
 
 const Back = styled.div`
     position: relative;
-    padding: 35px 0 35px;
+    padding: 30px 0 30px;
     width: 100%;
     background-size: cover;
     background-repeat: no-repeat;
@@ -29,21 +34,27 @@ const Slider = () => {
     const [error, setError] = useState();
 
     useEffect(() => {
-        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${MY_API_KEY}`).then( res => {//      
-            if(!res.ok) {
-                throw Error('Serverdan ma`lumot olish xatolik!');
-            }
-            return res.json();
-        }).then( data => {
-            setMoviesList(data.results.slice(0, 4));
-            // setIsLoader(false); 
-            // console.log(data.results.slice(0, 4))
-        })
-        .catch((err) => {
-            // setIsLoader(false);
 
+        apiCalls.getMovies('popular').then(data => {
+            setMoviesList(data.results.slice(0, 4));
+        }).catch( err => {
             setError(err.message);
         });
+        // fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${MY_API_KEY}`).then( res => {//      
+        //     if(!res.ok) {
+        //         throw Error('Serverdan ma`lumot olish xatolik!');
+        //     }
+        //     return res.json();
+        // }).then( data => {
+        //     setMoviesList(data.results.slice(0, 4));
+        //     // setIsLoader(false); 
+        //     // console.log(data.results.slice(0, 4))
+        // })
+        // .catch((err) => {
+        //     // setIsLoader(false);
+
+        //     setError(err.message);
+        // });
     }, []);
 
 

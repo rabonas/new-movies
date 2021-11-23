@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
-  Switch,
+  BrowserRouter,
+  Routes,
   Route
 } from "react-router-dom";
 import Home from "./pages/Home";
@@ -17,37 +17,18 @@ import ScrollToTop from "./components/ScrollToTop";
 function App() {
   return (
       <div className="wrapper">
-        <Router>
+        <BrowserRouter>
           <ScrollToTop/>
           <Header/>
-            <Switch>
-
-              <Route exact path="/">
-                <Home />
-              </Route>
-
-              <Route path="/catalog/:genreid">
-                <Catalog />
-              </Route>
-
-              <Route path="/catalog">
-                <Catalog />
-              </Route>
-
-              <Route path="/movie/:id">
-                <ViewMovies />
-              </Route>
-
-              <Route path="/search">
-                <Search />
-              </Route>
-
-              <Route path="*">
-                <NotFound />
-              </Route>
-
-            </Switch>
-        </Router>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/catalog/:genreid" element={<Catalog />} />
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/movie/:id" element={<ViewMovies />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
       </div>
   );
 }

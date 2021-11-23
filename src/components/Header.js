@@ -8,8 +8,8 @@ export default function Headers() {
                     <Link to="/"><img src='img/logo2.png' alt="" className="logo" /></Link>
 
                     <nav>
-                        <NavLink to="/catalog" className="header__link" activeClassName="active__link">Catalog</NavLink>
-                        <NavLink to="/search" className="header__link" activeClassName="active__link">Search</NavLink>
+                        <NavLink to="/catalog" className="header__link">Catalog</NavLink>
+                        <NavLink to="/search" className="header__link">Search</NavLink>
                     </nav>
                 </div>
             </div>
