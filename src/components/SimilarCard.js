@@ -15,4 +15,4 @@ const SimilarCard = (props) => {
     )
 }
 
-export default SimilarCard
+export default SimilarCard;

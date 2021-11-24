@@ -38,6 +38,8 @@ a {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  overflow: overlay;
+  height: 150vh;
 }
 
 .row4 {
@@ -340,6 +342,22 @@ background-image: linear-gradient(315deg, #1fd1f9 0%, #b621fe 74%);
   width: 500px;
 }
 
+#react-select-3-listbox {
+  z-index: 10;
+}
+
+#react-select-3-listbox div {
+  display: flex;
+}
+
+#react-select-5-listbox {
+  z-index: 10;
+}
+
+#react-select-7-listbox {
+  z-index: 10;
+}
+
 /*======================
         LOADER
 ======================*/
@@ -377,7 +395,6 @@ background-image: linear-gradient(315deg, #1fd1f9 0%, #b621fe 74%);
 .loader__film-img {
   animation: rotate 1.5s linear infinite;
 }
-
 
 /*======================
         404 page
@@ -652,6 +669,7 @@ footer a:hover {
 }
 
 .rating {
+  /* background: conic-gradient(${ratingColor} ${num}%, transparent 0 100%); */
   position: relative;
   display: flex;
   align-items: center;
@@ -829,7 +847,6 @@ footer a:hover {
 
   .genre {
     width: 110px;
-    /* max-width: 150px; */
   }
 
   .movie-grid__movie {
@@ -972,8 +989,4 @@ footer a:hover {
     bottom: 10px;
     left: 5px;
   }
-}
-
-@media (max-width: 320px) {
-
 }

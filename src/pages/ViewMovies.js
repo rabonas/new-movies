@@ -7,9 +7,6 @@ import ActorCard from '../components/ActorCard';
 import SimilarCard from '../components/SimilarCard';
 import apiCalls from '../config/api';
 
-const MY_API_KEY = '3b62cbd3019cef6ea3bcc5ecce56c01c';
-const SINGLE_MOVIE_API = `https://api.themoviedb.org/3/movie/`;
-const API_PARAMS = `?api_key=${MY_API_KEY}&language=en-US`;
 const IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
 
 const ViewBack = styled.div`
@@ -28,28 +25,14 @@ const ViewMovies = () => {
         apiCalls.detail(id).then(data => {
             setMovieInfo(data);
         });
-        // fetch(SINGLE_MOVIE_API + id + API_PARAMS).then(res => res.json()).then(data => {
-        //     setMovieInfo(data);
-        //     // console.log(data)
-        // });
 
         apiCalls.actorsAndCast(id).then(data => {
             setActorInfo(data.cast);
         });
-        // fetch(SINGLE_MOVIE_API + id + '/credits' + API_PARAMS).then( res => res.json())
-        // .then(data => {
-        //     // console.log(data);
-        //     setActorInfo(data.cast);
-        // });
 
         apiCalls.similar(id).then(data => {
             setSimilarInfo(data.results);
         });
-        // fetch(SINGLE_MOVIE_API + id + '/similar' + API_PARAMS).then( res => res.json() )
-        // .then(data => {
-        //     setSimilarInfo(data.results);
-        //     // console.log(data);
-        // });
     }, [id])
 
     return (
@@ -63,7 +46,10 @@ const ViewMovies = () => {
                                 <div className="view-movie__text">
                                     <h3>{movieInfo.title ? movieInfo.title : movieInfo.name}</h3>
                                     <span className="info">Genres: { movieInfo.genres ? movieInfo.genres.map( el => <span>{el.name}</span>) : ''}</span>
-                                    <span className="info">Country: { movieInfo.production_countries ? movieInfo.production_countries.map( el => <span>{el.name}</span>) : ''}</span>
+                                    <span className="info">Country: { movieInfo.production_countries ? 
+                                        movieInfo.production_countries.map( el => 
+                                            <span>{el.name}</span>
+                                        ) : ''}</span>
                                     <span className="info">Data: <span>{movieInfo.release_date}</span></span>
                                     <p className="view-movie__info_text">{movieInfo.overview}</p>
                                 </div>
@@ -97,7 +83,10 @@ const ViewMovies = () => {
                         "spaceBetween": 30
                         }
                     }}>
-                        {actorInfo.map((el, i) => (<SwiperSlide key={i} style={{backgroundColor: '#fff', padding: '5px'}}><ActorCard actorobj={el}/></SwiperSlide>))};
+                        {actorInfo.map((el, i) => (
+                        <SwiperSlide key={i} style={{backgroundColor: '#fff', padding: '5px'}}>
+                            <ActorCard actorobj={el}/>
+                        </SwiperSlide>))};
                     </Swiper>
                 </div>
             </div>
@@ -122,7 +111,10 @@ const ViewMovies = () => {
                         "spaceBetween": 30
                         }
                     }}>
-                        {similarInfo.map((el, i) => (<SwiperSlide key={i} style={{backgroundColor: '#fff'}}><SimilarCard movieobj={el}/></SwiperSlide>))};
+                        {similarInfo.map((el, i) => (
+                        <SwiperSlide key={i} style={{backgroundColor: '#fff'}}>
+                            <SimilarCard movieobj={el}/>
+                        </SwiperSlide>))};
                     </Swiper>
                 </div>
             </div>
