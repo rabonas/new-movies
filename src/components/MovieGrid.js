@@ -18,13 +18,14 @@ const MovieGrid = ({genre}) => {
     const loadMore = () => {
         setPage(page + 1)
     }
+    if(prevGenre !== genre) {
+        list = [];
+    } else {
+        list = movies;
+    }
 
     useEffect(() => {
-        if(prevGenre != genre) {
-            list = [];
-        } else {
-            list = movies;
-        }
+       
 
         if(genre === undefined) {
             apiCalls.getMovies('top_rated').then(data => {
@@ -42,7 +43,7 @@ const MovieGrid = ({genre}) => {
                 setTotalPage(data.total_pages);
             });
         }
-    }, [genre, page])
+    }, [genre, page, prevGenre, list])
 
     return (
         <div className="movie-grid">

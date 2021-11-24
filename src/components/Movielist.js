@@ -54,7 +54,7 @@ const Movielist = ({type, title}) => {
         }).catch( err => {
             setError(err.message);
         });
-    }, []);
+    }, [type]);
 
     return (
         <div>

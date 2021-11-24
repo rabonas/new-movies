@@ -52,7 +52,7 @@ const BigFilter = () => {
               .catch((err) => {
                   setError(err.message);
                 });
-          }, []);
+          }, [GENRES]);
             
   const newGenreArr = genreList.map((el) => {
     return { value: el.id, label: el.name };
