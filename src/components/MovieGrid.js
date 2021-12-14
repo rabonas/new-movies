@@ -15,13 +15,14 @@ const MovieGrid = ({genre}) => {
 
     let list;
 
-    const loadMore = () => {
-        setPage(page + 1)
-    }
     if(prevGenre !== genre) {
         list = [];
     } else {
         list = movies;
+    }
+    const loadMore = () => {
+        setPage(page + 1);
+        list.concat(movies)
     }
 
     useEffect(() => {
@@ -29,6 +30,8 @@ const MovieGrid = ({genre}) => {
 
         if(genre === undefined) {
             apiCalls.getMovies('top_rated').then(data => {
+                // 
+                // setSliceMovies()
                 setMovies(list.concat(data.results));
                 setTotalPage(data.total_pages);
             });
@@ -43,13 +46,13 @@ const MovieGrid = ({genre}) => {
                 setTotalPage(data.total_pages);
             });
         }
-    }, [genre, page, prevGenre, list])
+    }, [genre, page])
 
     return (
         <div className="movie-grid">
             <h2 className="movie-count"> Movies count: {movies.length}</h2>
             <div className="row3">
-                {movies.map((el, i) => <Link to={`/movie/${el.id}`} key={i} className="movie-grid__movie">
+                {list.map((el, i) => <Link to={`/movie/${el.id}`} key={i} className="movie-grid__movie">
                     <div>
                     <img src={IMAGE_URL + el.poster_path} alt={el.title} className="first-img" />
                     <img src={IMAGE_URL + el.backdrop_path} alt={el.title} className="second-img" />
