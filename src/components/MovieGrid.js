@@ -30,8 +30,6 @@ const MovieGrid = ({genre}) => {
 
         if(genre === undefined) {
             apiCalls.getMovies('top_rated').then(data => {
-                // 
-                // setSliceMovies()
                 setMovies(list.concat(data.results));
                 setTotalPage(data.total_pages);
             });
@@ -46,6 +44,7 @@ const MovieGrid = ({genre}) => {
                 setTotalPage(data.total_pages);
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [genre, page])
 
     return (
